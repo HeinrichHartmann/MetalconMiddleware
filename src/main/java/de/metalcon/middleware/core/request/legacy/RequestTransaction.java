@@ -1,15 +1,15 @@
-package de.metalcon.middleware.core.request;
+package de.metalcon.middleware.core.request.legacy;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")

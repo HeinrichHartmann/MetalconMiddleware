@@ -2,6 +2,8 @@ package de.metalcon.middleware.core.request;
 
 public interface Request {
 
-    Object run();
+    String getMessage();
+
+    void handleResponse(String response, AsyncRequestDispatcher dispatcher);
 
 }

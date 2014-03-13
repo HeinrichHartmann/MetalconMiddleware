@@ -1,6 +1,7 @@
 package de.metalcon.middleware.springconfig;
 
 import de.metalcon.middleware.core.JsonViewResolver;
+import org.resthub.web.springmvc.router.RouterConfigurationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.Scope;
@@ -14,9 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -27,9 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@EnableWebMvc
 @ComponentScan("de.metalcon.middleware")
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends RouterConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -45,8 +43,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         mediaTypes.put("json", MediaType.APPLICATION_JSON);
 
         configurer.replaceMediaTypes(mediaTypes).favorPathExtension(true)
-                .useJaf(false)
-                .defaultContentType(MediaType.TEXT_HTML);
+                .useJaf(false).defaultContentType(MediaType.TEXT_HTML);
     }
 
     @Bean
@@ -93,6 +90,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void init(){
         Scope threadScope = new SimpleThreadScope();
         bf.registerScope("thread", threadScope);
+    }
+
+    @Override
+    public List<String> listRouteFiles() {
+        List<String> routeFiles = new ArrayList<String>();
+        routeFiles.add("routes.conf");
+        return routeFiles;
     }
 
 }
