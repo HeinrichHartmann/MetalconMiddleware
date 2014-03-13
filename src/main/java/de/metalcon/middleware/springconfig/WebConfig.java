@@ -1,13 +1,13 @@
 package de.metalcon.middleware.springconfig;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import de.metalcon.middleware.core.JsonViewResolver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -20,7 +20,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import de.metalcon.middleware.core.JsonViewResolver;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebMvc
@@ -80,6 +84,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         taskExecutor.setCorePoolSize(5);
         taskExecutor.setMaxPoolSize(10);
         return taskExecutor;
+    }
+
+    @Autowired
+    private ConfigurableBeanFactory bf;
+
+    @PostConstruct
+    public void init(){
+        Scope threadScope = new SimpleThreadScope();
+        bf.registerScope("thread", threadScope);
     }
 
 }
